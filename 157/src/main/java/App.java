@@ -3,11 +3,15 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
 
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
 import org.bson.Document;
-import com.mongodb.Block;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.Block;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.client.MongoCursor;
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.result.DeleteResult;
@@ -15,6 +19,20 @@ import static com.mongodb.client.model.Updates.*;
 import com.mongodb.client.result.UpdateResult;
 import java.util.*;
 
+/**
+ * 
+ * @author khoi
+ *Apr 07, 2019 10:16:47 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Cluster created with settings {hosts=[ec2-3-92-197-163.compute-1.amazonaws.com:27021], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+Apr 07, 2019 10:16:47 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Cluster description not yet available. Waiting for 30000 ms before timing out
+Apr 07, 2019 10:16:48 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:1}] to ec2-3-92-197-163.compute-1.amazonaws.com:27021
+Apr 07, 2019 10:16:48 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=ec2-3-92-197-163.compute-1.amazonaws.com:27021, type=SHARD_ROUTER, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 6]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=82214163}
+Apr 07, 2019 10:16:48 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:2}] to ec2-3-92-197-163.compute-1.amazonaws.com:27021
+ */
 public class App 
 {
     public static void main( String[] args )
@@ -22,16 +40,24 @@ public class App
     	MongoClient mongoClient = null;
     	try
     	{
-    		mongoClient = new MongoClient("18.206.61.163", 27017);
+    		mongoClient = new MongoClient("3.212.192.253", 27021); //change mongod.conf "bind_ip" to 0.0.0.0 and add custom TCP rule, port:27017 (or mongos port), and source: anywhere, to use public dns for connection 
     	}
     	catch(Exception e)
     	{
     		System.err.println("Cannot connect");
     	}
     	
-		MongoDatabase database = mongoClient.getDatabase("test");
+		MongoDatabase database = mongoClient.getDatabase("project");
 		MongoCollection<Document> collection = database.getCollection("list");
-		collection.countDocuments();
+		System.out.println(collection.countDocuments());
+		
+		/*Block<Document> printBlock = new Block<Document>() {
+		     public void apply(final Document document) {
+		         System.out.println(document.toJson());
+		     }
+		};*/
+
+		//collection.find(and(gte("review_count", 10), lte("review_count", 20))).limit(3).forEach(printBlock);
 		
 		System.out.println(
 				"1. Flights the occur on Christmas. \n" +
@@ -146,3 +172,8 @@ public class App
     	//flights in December with no departure delay time
     }
 }
+
+
+
+
+
