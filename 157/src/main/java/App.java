@@ -51,6 +51,9 @@ public class App
 		MongoCollection<Document> collection = database.getCollection("list");
 		System.out.println(collection.countDocuments());
 		
+		Document myDoc = collection.find(eq("FL_DATE", "12/31/09")).first();
+		System.out.println(myDoc.toJson());
+		
 		/*Block<Document> printBlock = new Block<Document>() {
 		     public void apply(final Document document) {
 		         System.out.println(document.toJson());
@@ -62,7 +65,7 @@ public class App
 		System.out.println(
 				"1. Flights the occur on Christmas. \n" +
 				"2. Number of flights from San Francisco to New York in (some interval). \n" +
-				"3. Flights to the Memphis city.\n" +
+				"3. Number of flights recieved by each airport.\n" +
 				"4. Earliest or latest departure time from (a city) on (date).\n"+
 				"5. Flights where arrival time is after 1800 or 6:00 pm.\n"+
 				"6. Get the date of flights that have been cancelled.\n"+
@@ -70,11 +73,11 @@ public class App
 				"8. Flights where there is more than 1 stop.\n" +
 				"9. Flights that use the same plane and there is a departure delay greater than 20 minutes.\n" +
 				"10. Flights where the journey is greater than 200 miles.\n" +
-				"11. Flights with no cancellations but is delayed by weather.\n" +
+				"11. Most popular flight destinations per quarter.\n" +
 				"12. Flights where takeoff (taxi in) and touchdown (taxi off) is less than 60 minutes combined./n" +
 				"13. Date of flights with multiple delays.\n"+
 				"14. Flights that occur after 1pm and before 8pm.\n" +
-				"15. Flights in December where depature delay is non-exsistent.\n"
+				"15. Number of flights per quarter.\n"
 				+ "\n"+"Enter in the query number you wish to execute: ");
 		
 		
@@ -107,9 +110,9 @@ public class App
     	//number of flights from SF to NY in certain date interval
     }
     
-    public void memphisFlights()
+    public void numberOfFlightsPerAirport()
     {
-    	//flights to a city named Memphis (state doesn't matter)
+    	//number of flights arriving at each airport in 2009
     }
     
     public void earlyLateDeparture()
@@ -147,9 +150,9 @@ public class App
     	//flights where the distance is greater than 200 miles
     }
     
-    public void noCancellationButDelay()
+    public void mostPopularDestPerQuarter()
     {
-    	//flights that have no cancellation but have been weather delayed
+    	//most popular destination in each quarter
     }
     
     public void minOffAndOn()
@@ -167,9 +170,9 @@ public class App
     	//flights after 1pm and before 8 pm
     }
     
-    public void noDecemberDelays()
+    public void flightsPerQuarter()
     {
-    	//flights in December with no departure delay time
+    	//number of flights in each quarter
     }
 }
 
